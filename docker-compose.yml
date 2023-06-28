@@ -3,6 +3,8 @@ version: '3'
 services:
   app:
     build: api/
+    environment:
+      KASM_URL: https://kasm_user:password@127.0.0.1:6901
     ports:
       - 8080:8080
     networks:
@@ -26,6 +28,16 @@ services:
       OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: true
     ports:
       - 4180:4180
+    networks:
+      - app
+
+  kasm:
+    image: kasmweb/ubuntu-jammy-desktop:1.13.0
+    shm_size: 512  # Reccomended 512 MB for /dev/shm
+    environment:
+      VNC_PW: password
+    ports:
+      - 6901:6901
     networks:
       - app
 
