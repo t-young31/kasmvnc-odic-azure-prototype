@@ -4,7 +4,7 @@ services:
   app:
     build: api/
     environment:
-      KASM_URL: https://kasm_user:password@127.0.0.1:6901
+      KASM_URL: https://127.0.0.1:6901
     ports:
       - 8080:8080
     networks:
@@ -16,6 +16,7 @@ services:
       OAUTH2_PROXY_UPSTREAMS: "http://app:8080"
       OAUTH2_PROXY_HTTP_ADDRESS: 0.0.0.0:4180
       OAUTH2_PROXY_PASS_HOST_HEADER: true
+      OAUTH2_PROXY_PASS_ACCESS_TOKEN: true
       OAUTH2_PROXY_CLIENT_ID: ${CLIENT_ID}
       OAUTH2_PROXY_CLIENT_SECRET: ${CLIENT_SECRET}
       OAUTH2_PROXY_COOKIE_SECRET: ${COOKIE_SECRET}
@@ -23,11 +24,25 @@ services:
       OAUTH2_PROXY_COOKIE_SECURE: false
       OAUTH2_PROXY_INSECURE_OIDC_ALLOW_UNVERIFIED_EMAIL: true
       OAUTH2_PROXY_PROVIDER: oidc
+      OAUTH2_PROXY_PASS_AUTHORIZATION_HEADER': true
       OAUTH2_PROXY_PASS_USER_HEADERS: true
+      OAUTH2_PROXY_SKIP_JWT_BEARER_TOKENS: true  # required to enabled ID token verification
       OAUTH2_PROXY_OIDC_ISSUER_URL: https://login.microsoftonline.com/${TENANT_ID}/v2.0
+      #OAUTH2_PROXY_EXTRA_JWT_ISSUERS: app=https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration
       OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: true
+      OAUTH2_PROXY_REDIRECT_URL: http://localhost:8001/oauth2/callback
     ports:
       - 4180:4180
+    networks:
+      - app
+
+  nginx:
+    image: nginx
+    ports:
+      - "8001:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      # - ./nginx/ssl:/etc/nginx/
     networks:
       - app
 
@@ -36,8 +51,8 @@ services:
     shm_size: 512  # Reccomended 512 MB for /dev/shm
     environment:
       VNC_PW: password
-    ports:
-      - 6901:6901
+    #ports:
+    #  - 6901:6901
     networks:
       - app
 

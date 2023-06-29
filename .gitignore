@@ -2,3 +2,4 @@
 !.env.sample
 .DS_Store
 id_rsa*
+**/ssl/*
