@@ -3,3 +3,4 @@
 .DS_Store
 id_rsa*
 **/ssl/*
+kasm/nginx/nginx.conf
