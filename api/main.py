@@ -35,7 +35,6 @@ async def me(request: Request, response: Response):
 @app.get("/vm")
 async def vm(request: Request):
 
-
     token = request.headers["x-forwarded-access-token"]
     # TODO: verify JWT. see https://github.com/microsoft/AzureTRE/blob/8c82fd75ee9ad48c6fd7f257ca1ecc8055e57852/api_app/services/aad_authentication.py#L144
     payload = jwt.decode(token, algorithms=['RS256'], options={"verify_signature": False})
