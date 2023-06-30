@@ -3,8 +3,7 @@ SHELL:=/bin/bash
 
 deploy: ssl
 	. load_env.sh && \
-	docker compose up --build && \
-	echo "http://localhost:4180/me"
+	docker compose up --build
 
 destroy:
 	docker compose down

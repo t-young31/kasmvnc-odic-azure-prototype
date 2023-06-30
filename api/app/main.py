@@ -24,14 +24,18 @@ async def me(request: Request, response: Response):
     print("Headers: \n", {k: v for k, v in request.headers.items() if k != "cookie"})
     token = request.headers["x-access-token"]
     # TODO: verify JWT. see https://github.com/microsoft/AzureTRE/blob/8c82fd75ee9ad48c6fd7f257ca1ecc8055e57852/api_app/services/aad_authentication.py#L144
-    payload = jwt.decode(token, algorithms=['RS256'], options={"verify_signature": False})
+    payload = jwt.decode(
+        token, algorithms=["RS256"], options={"verify_signature": False}
+    )
     print("JWT:\n", payload)
 
     try:
-        email = request.headers['x-email']
+        email = request.headers["x-email"]
         response.status_code = status.HTTP_200_OK
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
 
     return User(email=email)
 
@@ -40,6 +44,8 @@ async def me(request: Request, response: Response):
 async def vm(request: Request):
 
     if "x-email" not in request.headers:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
-   
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
+
     return RedirectResponse(os.environ["KASM_URL"], status_code=status.HTTP_302_FOUND)
