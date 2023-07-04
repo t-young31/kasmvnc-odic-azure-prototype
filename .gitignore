@@ -1,6 +1,8 @@
 .env*
 !.env.sample
+.venv
 .DS_Store
+.idea
 id_rsa*
 **/ssl/*
 kasm/nginx/nginx.conf
