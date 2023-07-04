@@ -5,4 +5,5 @@
 .idea
 id_rsa*
 **/ssl/*
+!ssl/*.sh
 kasm/nginx/nginx.conf
